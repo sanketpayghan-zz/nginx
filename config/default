@@ -68,13 +68,17 @@ server {
 #}
 
 upstream backend {
-   server 192.168.1.5:4747;
-   server 192.168.1.5:4748;
+   server 192.168.1.8:4747;
+   server 192.168.1.8:4748;
 }
 
 server {
 	listen 8000;
 	location /search {
+		proxy_pass "http://backend";
+	}
+	location /makemysearch {
+		rewrite ^/makemysearch(.*) $1/search break;
 		proxy_pass "http://backend";
 	}
 }
